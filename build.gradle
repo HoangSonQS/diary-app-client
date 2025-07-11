@@ -1,7 +1,6 @@
 plugins {
     id 'java'
     id 'application'
-    id 'org.javamodularity.moduleplugin' version '1.8.12'
     id 'org.openjfx.javafxplugin' version '0.0.13'
     id 'org.beryx.jlink' version '2.25.0'
 }
@@ -25,12 +24,11 @@ tasks.withType(JavaCompile) {
 }
 
 application {
-    mainModule = 'com.mydiary.diaryappclient'
-    mainClass = 'com.mydiary.diaryappclient.HelloApplication'
+    mainClass = 'com.mydiary.diaryappclient.MainApplication'
 }
 
 javafx {
-    version = '17.0.6'
+    version = '17.0.10'
     modules = ['javafx.controls', 'javafx.fxml', 'javafx.web', 'javafx.swing', 'javafx.media']
 }
 
@@ -44,12 +42,8 @@ dependencies {
     }
     implementation('org.kordamp.ikonli:ikonli-javafx:12.3.1')
     implementation('org.kordamp.bootstrapfx:bootstrapfx-core:0.4.0')
-    implementation('eu.hansolo:tilesfx:21.0.3') {
+    implementation('eu.hansolo:tilesfx:17.1.25') {
         exclude(group: 'org.openjfx')
-    }
-    implementation('com.github.almasb:fxgl:17.3') {
-        exclude(group: 'org.openjfx')
-        exclude(group: 'org.jetbrains.kotlin')
     }
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
@@ -60,6 +54,10 @@ dependencies {
 
     // Thư viện để chuyển đổi JSON (Cùng loại với thư viện mà Spring Boot dùng)
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
+
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+
 }
 
 test {

@@ -1,0 +1,112 @@
+/* * ==========================================================================
+ * style.css - Bảng định kiểu cho Ứng dụng Nhật ký Ultimate
+ * ==========================================================================
+ */
+
+/* * -- Toàn cục --
+ * Các thuộc tính này áp dụng cho toàn bộ giao diện.
+ */
+.root {
+    /* Phông chữ */
+    -fx-font-family: "Segoe UI", "Roboto", "System";
+
+    /* Nền chính của ứng dụng */
+    -fx-background-color: #F4F6F8;
+}
+
+/* * -- Khung chứa Form chính --
+ * Áp dụng cho VBox bao bọc các thành phần của form.
+ */
+.form-container {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 15, 0, 0, 4);
+}
+
+/* -- Các thành phần văn bản -- */
+.header-title {
+    -fx-text-fill: #34495E;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.form-label {
+    -fx-text-fill: #7F8C8D;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.error-label {
+    -fx-text-fill: #E74C3C;
+    -fx-font-size: 13px;
+}
+
+/* -- Ô nhập liệu -- */
+.text-field {
+    -fx-background-color: #F4F6F8;
+    -fx-background-radius: 8px;
+    -fx-border-color: #D5D8DC;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #7F8C8D;
+    -fx-padding: 10px;
+}
+
+/* Khi ô nhập liệu được chọn (focus) */
+.text-field:focused {
+    -fx-border-color: #3498DB;
+}
+
+/* -- Nút bấm chính -- */
+.primary-button {
+    -fx-background-color: #3498DB;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 8px;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+/* Khi di chuột qua nút bấm */
+.primary-button:hover {
+    /* Làm màu nền tối đi 10% */
+    -fx-background-color: #3498DB, rgba(0, 0, 0, 0.1);
+}
+
+/* -- Liên kết -- */
+.hyperlink {
+    -fx-text-fill: #3498DB;
+    -fx-underline: false; /* Bỏ gạch chân mặc định */
+    -fx-border-width: 0;
+    -fx-cursor: hand;
+}
+
+.hyperlink:hover {
+    -fx-underline: true; /* Thêm gạch chân khi di chuột qua */
+}
+
+/* * -- Thanh báo độ mạnh mật khẩu (ProgressBar) --
+ * Controller sẽ thêm/bỏ các lớp 'weak', 'medium', 'strong' để thay đổi màu sắc.
+ */
+.progress-bar {
+    -fx-background-radius: 4px;
+}
+
+/* Lớp cho mật khẩu YẾU */
+.progress-bar.weak .bar {
+    -fx-accent: #E74C3C; /* Màu đỏ */
+    -fx-background-radius: 4px;
+}
+
+/* Lớp cho mật khẩu TRUNG BÌNH */
+.progress-bar.medium .bar {
+    -fx-accent: #F1C40F; /* Màu vàng */
+    -fx-background-radius: 4px;
+}
+
+/* Lớp cho mật khẩu MẠNH */
+.progress-bar.strong .bar {
+    -fx-accent: #2ECC71; /* Màu xanh lá */
+    -fx-background-radius: 4px;
+}
