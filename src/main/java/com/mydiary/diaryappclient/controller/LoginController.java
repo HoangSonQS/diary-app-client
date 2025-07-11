@@ -1,11 +1,14 @@
 package com.mydiary.diaryappclient.controller;
 
 import com.mydiary.diaryappclient.service.ApiClient;
+import com.mydiary.diaryappclient.util.SceneManager;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+
+import java.io.IOException;
 
 public class LoginController {
 
@@ -70,20 +73,26 @@ public class LoginController {
         });
 
         loginTask.setOnSucceeded(e -> {
-            // Khi thành công, chuyển sang màn hình chính
             Platform.runLater(() -> {
-                System.out.println(loginTask.getValue());
-                // TODO: Chuyển sang màn hình chính (main-view.fxml)
-                loginButton.setDisable(false);
-                loginButton.setText("Đăng nhập");
+                try {
+                    // Chuyển sang màn hình chính sau khi đăng nhập thành công
+                    SceneManager.switchScene("main-view.fxml", "Nhật ký của bạn");
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                    showError("Không thể tải màn hình chính.");
+                    // Bật lại nút bấm ngay cả khi chuyển scene lỗi
+                    loginButton.setDisable(false);
+                    loginButton.setText("Đăng nhập");
+                }
+                // Không cần bật lại nút ở đây vì đã chuyển màn hình
             });
         });
 
         loginTask.setOnFailed(e -> {
-            // Khi thất bại, hiển thị lỗi
             Throwable exception = loginTask.getException();
             Platform.runLater(() -> {
                 showError(exception.getMessage());
+                // Bật lại nút bấm khi có lỗi
                 loginButton.setDisable(false);
                 loginButton.setText("Đăng nhập");
             });
@@ -99,7 +108,12 @@ public class LoginController {
 
     @FXML
     private void handleSignUpLinkAction(ActionEvent event) {
-        // TODO: Chuyển sang màn hình đăng ký (register-view.fxml)
+        try {
+            SceneManager.switchScene("register-view.fxml", "Tạo tài khoản mới");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.out.println("Chuyển sang màn hình đăng ký");
     }
+
 }

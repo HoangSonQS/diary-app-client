@@ -1,8 +1,7 @@
 package com.mydiary.diaryappclient;
 
+import com.mydiary.diaryappclient.util.SceneManager; // 1. Import lớp SceneManager
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -10,14 +9,12 @@ import java.io.IOException;
 public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        // Cập nhật đường dẫn để trỏ vào thư mục /views/
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("/views/register-view.fxml"));
+        // 2. Gán cửa sổ chính (Stage) cho SceneManager để nó có thể điều khiển
+        SceneManager.setPrimaryStage(stage);
 
-        Scene scene = new Scene(fxmlLoader.load());
-
-        stage.setTitle("Ultimate Diary - Đăng nhập");
-        stage.setScene(scene);
-        stage.show();
+        // 3. Sử dụng SceneManager để tải và hiển thị màn hình đầu tiên
+        //    Thao tác này thay thế hoàn toàn cho việc tạo FXMLLoader và Scene thủ công
+        SceneManager.switchScene("login-view.fxml", "Ultimate Diary - Đăng nhập");
     }
 
     public static void main(String[] args) {
