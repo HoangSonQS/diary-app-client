@@ -50,10 +50,21 @@ public class ApiClient {
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
+            // --- BẮT ĐẦU DEBUG ---
+            // Đọc nội dung response vào một biến để có thể sử dụng lại,
+            // vì response.body().string() chỉ có thể được gọi MỘT LẦN.
+            final String responseBody = response.body().string();
+
+            System.out.println("DEBUG API: Status Code = " + response.code());
+            System.out.println("DEBUG API: Response Body = " + responseBody);
+            // --- KẾT THÚC DEBUG ---
+
             if (!response.isSuccessful()) {
-                throw new IOException("Lỗi đăng nhập: " + response.body().string());
+                // Sử dụng lại responseBody đã đọc
+                throw new IOException("Lỗi đăng nhập: " + responseBody);
             }
-            return objectMapper.readValue(response.body().string(), AuthResponse.class);
+            // Sử dụng lại responseBody để chuyển đổi
+            return objectMapper.readValue(responseBody, AuthResponse.class);
         }
     }
 

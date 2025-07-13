@@ -17,11 +17,10 @@
 
                 <VBox spacing="5.0">
                     <children>
-                        <Label styleClass="form-label" text="Họ và tên" />
-                        <TextField fx:id="fullNameField" promptText="Nhập họ và tên của bạn" styleClass="text-field" />
+                        <Label styleClass="form-label" text="Tên đăng nhập" />
+                        <TextField fx:id="usernameField" promptText="Tên bạn muốn dùng trong ứng dụng" styleClass="text-field" />
                     </children>
                 </VBox>
-
                 <VBox spacing="5.0">
                     <children>
                         <Label styleClass="form-label" text="Địa chỉ email" />
@@ -39,7 +38,6 @@
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                             <children>
                                 <ProgressBar fx:id="passwordStrengthBar" prefWidth="Infinity" progress="0.0" HBox.hgrow="ALWAYS" />
-
                                 <CheckBox fx:id="showPasswordCheckBox" text="Hiện mật khẩu" minWidth="120"/>
                             </children>
                         </HBox>
@@ -68,9 +66,9 @@
 
                 <Label fx:id="errorLabel" managed="false" styleClass="error-label" text="Thông tin không hợp lệ" visible="false" wrapText="true" />
 
-                <Button fx:id="registerButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="Infinity" styleClass="primary-button" text="Tạo tài khoản" />
+                <Button fx:id="registerButton" onAction="#handleRegisterButtonAction" prefHeight="40.0" prefWidth="Infinity" styleClass="primary-button" text="Tạo tài khoản" />
 
-                <Hyperlink fx:id="signInLink" text="Đã có tài khoản? Đăng nhập" />
+                <Hyperlink fx:id="signInLink" onAction="#handleSignInLinkAction" text="Đã có tài khoản? Đăng nhập" />
             </children>
             <padding>
                 <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />

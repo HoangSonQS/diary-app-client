@@ -44,9 +44,9 @@
 
                 <Label fx:id="errorLabel" managed="false" styleClass="error-label" text="Sai thông tin đăng nhập" visible="false" wrapText="true" />
 
-                <Button fx:id="loginButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="Infinity" styleClass="primary-button" text="Đăng nhập" />
+                <Button fx:id="loginButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="Infinity" styleClass="primary-button" text="Đăng nhập" onAction="#handleLoginButtonAction" />
 
-                <Hyperlink fx:id="signUpLink" text="Chưa có tài khoản? Đăng ký ngay" />
+                <Hyperlink fx:id="signUpLink" text="Chưa có tài khoản? Đăng ký ngay" onAction="#handleSignUpLinkAction"/>
             </children>
             <padding>
                 <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />

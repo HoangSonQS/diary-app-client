@@ -28,13 +28,20 @@ public class SceneManager {
      * @throws IOException Nếu không thể tải file FXML.
      */
     public static void switchScene(String fxmlFile, String title) throws IOException {
-        // Tải file FXML từ thư mục /views/
         Parent root = FXMLLoader.load(Objects.requireNonNull(MainApplication.class.getResource("/views/" + fxmlFile)));
 
-        // Tạo một Scene mới và đặt nó vào cửa sổ chính
-        Scene scene = new Scene(root);
+        // Nếu scene hiện tại là null (lần đầu khởi động), tạo mới
+        // Nếu không, chỉ cần thay đổi nội dung (root)
+        if (primaryStage.getScene() == null) {
+            primaryStage.setScene(new Scene(root));
+        } else {
+            primaryStage.getScene().setRoot(root);
+        }
+
         primaryStage.setTitle(title);
-        primaryStage.setScene(scene);
+        primaryStage.sizeToScene(); // Tự động điều chỉnh kích thước cửa sổ cho vừa với nội dung
         primaryStage.show();
+
+        primaryStage.centerOnScreen();
     }
 }
