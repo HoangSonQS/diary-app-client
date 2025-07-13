@@ -18,15 +18,19 @@ public class LoginController {
     @FXML private PasswordField passwordField;
     @FXML private TextField visiblePasswordField;
     @FXML private CheckBox showPasswordCheckBox;
+    @FXML private CheckBox rememberMeCheckBox;
     @FXML private Button loginButton;
     @FXML private Label errorLabel;
     @FXML private Hyperlink signUpLink;
+    @FXML private Hyperlink forgotPasswordLink;
 
     public void initialize() {
         visiblePasswordField.textProperty().bindBidirectional(passwordField.textProperty());
         showPasswordCheckBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
             passwordField.setVisible(!isNowSelected);
+            passwordField.setManaged(!isNowSelected);
             visiblePasswordField.setVisible(isNowSelected);
+            visiblePasswordField.setManaged(isNowSelected);
         });
     }
 
@@ -44,23 +48,29 @@ public class LoginController {
         loginButton.setText("Đang xử lý...");
         errorLabel.setVisible(false);
 
+        System.out.println("DEBUG: Nút đăng nhập đã được nhấn. Chuẩn bị tạo Task.");
+
         Task<AuthResponse> loginTask = new Task<>() {
             @Override
             protected AuthResponse call() throws Exception {
-                return ApiClient.getInstance().login(username, password);
+                System.out.println("DEBUG: Task đang chạy trên luồng nền. Bắt đầu gọi API...");
+                AuthResponse response = ApiClient.getInstance().login(username, password);
+                System.out.println("DEBUG: Đã gọi API xong. Nhận được phản hồi.");
+                return response;
             }
         };
 
         loginTask.setOnSucceeded(e -> {
+            System.out.println("DEBUG: Task BÁO THÀNH CÔNG (setOnSucceeded).");
             AuthResponse authResponse = loginTask.getValue();
             AuthService.getInstance().setAuthToken(authResponse.getToken());
 
             Platform.runLater(() -> {
                 try {
                     SceneManager.switchScene("create-pin-view.fxml", "Tạo mã PIN");
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                    showError("Không thể tải màn hình chính.");
+                } catch (Exception  ex) {
+                    ex.printStackTrace();
+                    showError("Lỗi nghiêm trọng: Không thể tải màn hình tạo PIN.");
                     loginButton.setDisable(false);
                     loginButton.setText("Đăng nhập");
                 }
@@ -68,6 +78,7 @@ public class LoginController {
         });
 
         loginTask.setOnFailed(e -> {
+            System.out.println("DEBUG: Task BÁO KHÔNG THÀNH CÔNG (setOnSucceeded).");
             Throwable exception = loginTask.getException();
             Platform.runLater(() -> {
                 showError(exception.getMessage());

@@ -36,7 +36,9 @@ public class RegisterController {
         // Thêm listener cho checkbox "Hiện mật khẩu"
         showPasswordCheckBox.selectedProperty().addListener((obs, oldVal, newVal) -> {
             passwordField.setVisible(!newVal);
+            passwordField.setManaged(!newVal);
             visiblePasswordField.setVisible(newVal);
+            visiblePasswordField.setManaged(newVal);
         });
 
         // Thêm listener để cập nhật thanh báo độ mạnh mật khẩu khi người dùng gõ
@@ -69,6 +71,7 @@ public class RegisterController {
             showError("Bạn phải đồng ý với Điều khoản Dịch vụ.");
             return;
         }
+
 
         // Vô hiệu hóa nút bấm để tránh double-click và hiển thị trạng thái chờ
         registerButton.setDisable(true);
