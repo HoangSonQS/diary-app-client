@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mydiary.diaryappclient.controller.CreatePinController">
+    <children>
+        <VBox alignment="CENTER" maxWidth="400" spacing="20.0" styleClass="form-container">
+            <children>
+                <Label styleClass="header-title" text="Tạo mã PIN bảo mật">
+                    <font>
+                        <Font name="Segoe UI Bold" size="24.0" />
+                    </font>
+                </Label>
+                <Label text="Tạo một mã PIN 6 số để mở khóa ứng dụng nhanh hơn." textAlignment="CENTER" wrapText="true" />
+                <VBox spacing="5.0">
+                    <children>
+                        <Label styleClass="form-label" text="Nhập mã PIN (6 số)" />
+                        <PasswordField fx:id="pinField" promptText="••••••" />
+                    </children>
+                </VBox>
+                <VBox spacing="5.0">
+                    <children>
+                        <Label styleClass="form-label" text="Xác nhận lại mã PIN" />
+                        <PasswordField fx:id="confirmPinField" promptText="••••••" />
+                    </children>
+                </VBox>
+                <Label fx:id="errorLabel" managed="false" styleClass="error-label" visible="false" />
+                <Button fx:id="createPinButton" mnemonicParsing="false" onAction="#handleCreatePinAction" prefHeight="40.0" prefWidth="Infinity" styleClass="primary-button" text="Xác nhận và Lưu" />
+            </children>
+            <padding>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+            </padding>
+        </VBox>
+    </children>
+</StackPane>

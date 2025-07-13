@@ -57,7 +57,7 @@ public class LoginController {
 
             Platform.runLater(() -> {
                 try {
-                    SceneManager.switchScene("main-view.fxml", "Nhật ký của bạn");
+                    SceneManager.switchScene("create-pin-view.fxml", "Tạo mã PIN");
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                     showError("Không thể tải màn hình chính.");
