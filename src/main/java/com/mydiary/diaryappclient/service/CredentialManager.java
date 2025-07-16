@@ -7,45 +7,48 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 public class CredentialManager {
+    // Vẫn giữ nguyên đường dẫn
     private static final Path CONFIG_DIR = Paths.get(System.getProperty("user.home"), ".ultimate-diary");
-    private static final Path CREDENTIALS_FILE = CONFIG_DIR.resolve("credentials.properties");
+    private static final Path CREDENTIALS_FILE = CONFIG_DIR.resolve("user.properties"); // Đổi tên file cho rõ nghĩa
 
-    // Record để chứa dữ liệu đọc được từ file
-    public record StoredCredentials(String encryptedToken, String pinHash) {}
-
-    // Lưu trữ thông tin
-    public static void saveCredentials(String encryptedToken, String pinHash) throws IOException {
+    /**
+     * Lưu lại username của người dùng cuối cùng
+     * @param username Tên đăng nhập để lưu
+     */
+    public static void saveLastUser(String username) throws IOException {
         if (!Files.exists(CONFIG_DIR)) {
             Files.createDirectories(CONFIG_DIR);
         }
         Properties props = new Properties();
-        props.setProperty("token", encryptedToken);
-        props.setProperty("pin_hash", pinHash);
+        props.setProperty("last_user", username);
 
         try (OutputStream output = new FileOutputStream(CREDENTIALS_FILE.toFile())) {
-            props.store(output, "Ultimate Diary Credentials - DO NOT EDIT");
+            props.store(output, "Ultimate Diary Last User");
         }
     }
 
-    // Tải thông tin
-    public static StoredCredentials loadCredentials() {
+    /**
+     * Tải username của người dùng cuối cùng
+     * @return Trả về username, hoặc null nếu không có file
+     */
+    public static String loadLastUser() {
         if (!Files.exists(CREDENTIALS_FILE)) {
             return null;
         }
         Properties props = new Properties();
         try (InputStream input = new FileInputStream(CREDENTIALS_FILE.toFile())) {
             props.load(input);
-            String token = props.getProperty("token");
-            String pinHash = props.getProperty("pin_hash");
-            return new StoredCredentials(token, pinHash);
+            return props.getProperty("last_user");
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    // Xóa thông tin (dùng khi đăng xuất)
-    public static void deleteCredentials() throws IOException {
+    /**
+     * Xóa thông tin người dùng đã lưu (dùng khi đăng xuất)
+     */
+    public static void deleteLastUser() throws IOException {
         if(Files.exists(CREDENTIALS_FILE)) {
             Files.delete(CREDENTIALS_FILE);
         }

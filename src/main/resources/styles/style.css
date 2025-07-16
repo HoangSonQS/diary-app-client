@@ -110,3 +110,35 @@
     -fx-accent: #2ECC71; /* Màu xanh lá */
     -fx-background-radius: 4px;
 }
+
+/* -- Component PIN Field -- */
+.real-pin-field {
+    /* Làm cho ô nhập thật trở nên vô hình */
+    -fx-background-color: transparent;
+    -fx-text-fill: transparent; /* Ẩn con trỏ và văn bản */
+    -fx-border-color: transparent;
+    -fx-alignment: center;
+    -fx-font-size: 24px;
+    /* Giãn cách các ký tự để khớp với các ô giả */
+    /* Điều chỉnh giá trị này nếu cần */
+    -fx-letter-spacing: 24;
+}
+
+.visual-pin-char {
+    -fx-background-color: #ecf0f1; /* Màu nền xám nhạt */
+    -fx-background-radius: 5px;
+    -fx-border-color: #D5D8DC; /* Màu viền xám */
+    -fx-border-radius: 5px;
+    -fx-border-width: 1px;
+    -fx-font-size: 18px;
+    -fx-text-fill: #34495E; /* Màu chữ xám đậm */
+    -fx-alignment: center;
+}
+
+/* Style cho ô PIN đang được "focus" */
+.visual-pin-char-focused {
+    -fx-border-color: #3498DB; /* Màu nhấn xanh dương */
+    -fx-border-width: 2px;
+    /* Hiệu ứng đổ bóng nhẹ */
+    -fx-effect: dropshadow(gaussian, #3498DB, 5, 0, 0, 0);
+}
