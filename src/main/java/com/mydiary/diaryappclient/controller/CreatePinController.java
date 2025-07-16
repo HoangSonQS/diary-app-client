@@ -45,32 +45,52 @@ public class CreatePinController {
         createPinButton.setText("Đang lưu...");
         errorLabel.setVisible(false);
 
+        System.out.println("DEBUG: Nút Tạo PIN đã nhấn. Chuẩn bị tạo Task.");
+
+
         // Tạo Task để gọi API trên luồng nền
         Task<Void> setPinTask = new Task<>() {
             @Override
             protected Void call() throws Exception {
+                // Gọi API để backend lưu PIN
+                System.out.println("DEBUG: Task setPin đang chạy...");
                 ApiClient.getInstance().setPin(pin);
+                System.out.println("DEBUG: Đã gọi API setPin xong.");
+                // Sau khi set PIN thành công, lưu lại username ở local
+                // để lần sau mở app sẽ vào thẳng màn hình nhập PIN
+                String username = AuthService.getInstance().getUsername();
+                CredentialManager.saveLastUser(username);
+                System.out.println("DEBUG: Đã lưu user vào CredentialManager.");
+
                 return null;
             }
         };
 
+        // Xử lý khi Task thành công
         setPinTask.setOnSucceeded(e -> {
+            System.out.println("DEBUG: Task BÁO THÀNH CÔNG (setOnSucceeded).");
+
             Platform.runLater(() -> {
                 try {
-                    // Sau khi set PIN thành công, lưu lại thông tin local và vào màn hình chính
-                    String username = AuthService.getInstance().getUsername();
-                    CredentialManager.saveLastUser(username); // Lưu lại để lần sau mở app sẽ hỏi PIN
+                    System.out.println("DEBUG: Chuẩn bị chuyển sang main-view.fxml...");
                     SceneManager.switchScene("main-view.fxml", "Nhật ký của bạn");
+                    System.out.println("DEBUG: Đã gọi lệnh chuyển màn hình.");
                 } catch (Exception ex) {
+                    System.out.println("DEBUG: LỖI BÊN TRONG setOnSucceeded!");
                     ex.printStackTrace();
                     showError("Lỗi nghiêm trọng khi chuyển màn hình.");
                 }
             });
         });
 
+        // Xử lý khi Task thất bại
         setPinTask.setOnFailed(e -> {
+            System.out.println("DEBUG: Task BÁO THẤT BẠI (setOnFailed).");
+            Throwable exception = setPinTask.getException();
+            System.err.println("Lỗi trong Task: " + exception.getMessage());
+            exception.printStackTrace(); // In ra toàn bộ lỗi
             Platform.runLater(() -> {
-                showError(setPinTask.getException().getMessage());
+                showError(exception.getMessage());
                 createPinButton.setDisable(false);
                 createPinButton.setText("Xác nhận và Lưu");
             });

@@ -51,6 +51,7 @@ dependencies {
 
     // Thư viện để gọi HTTP request (Rất mạnh mẽ và phổ biến)
     implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
 
     // Thư viện để chuyển đổi JSON (Cùng loại với thư viện mà Spring Boot dùng)
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'

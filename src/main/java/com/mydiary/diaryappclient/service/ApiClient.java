@@ -6,6 +6,7 @@ import com.mydiary.diaryappclient.model.HasPinResponse;
 import com.mydiary.diaryappclient.model.LoginRequest;
 import com.mydiary.diaryappclient.model.RegisterRequest;
 import okhttp3.*;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.IOException;
 
@@ -33,19 +34,32 @@ public class ApiClient {
 
     // Constructor được sửa đổi để tự động thêm token vào mỗi request
     private ApiClient() {
+        // --- BẮT ĐẦU THAY ĐỔI ---
+        // 1. Tạo một logger
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY); // Log cả body và header
+
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
+
+        // 2. Thêm Interceptor thêm token của chúng ta
         builder.addInterceptor(chain -> {
             Request originalRequest = chain.request();
             Request.Builder newRequestBuilder = originalRequest.newBuilder();
-
             String token = AuthService.getInstance().getAuthToken();
             if (token != null && !token.isEmpty()) {
+                System.out.println("DEBUG: Tìm thấy token, đang thêm vào header...");
                 newRequestBuilder.header("Authorization", "Bearer " + token);
+            } else {
+                System.out.println("DEBUG: Không tìm thấy token trong AuthService.");
             }
-
             return chain.proceed(newRequestBuilder.build());
         });
+
+        // 3. Thêm logger vào cuối cùng để nó in ra request cuối cùng
+        builder.addInterceptor(loggingInterceptor);
+
         this.client = builder.build();
+        // --- KẾT THÚC THAY ĐỔI ---
     }
 
     public AuthResponse login(String username, String password) throws IOException {
@@ -93,10 +107,10 @@ public class ApiClient {
     }
 
     public static class PinLoginRequest {
-        public String username;
+        public String usernameOrEmail;
         public String pin;
-        public PinLoginRequest(String username, String pin) {
-            this.username = username;
+        public PinLoginRequest(String usernameOrEmail, String pin) {
+            this.usernameOrEmail = usernameOrEmail;
             this.pin = pin;
         }
     }
@@ -108,7 +122,7 @@ public class ApiClient {
         RequestBody body = RequestBody.create(jsonBody, JSON);
 
         Request request = new Request.Builder()
-                .url(BASE_URL + "/auth/pin-login") // Endpoint mới
+                .url(BASE_URL + "/auth/login-pin") // Endpoint mới
                 .post(body)
                 .build();
 
@@ -127,11 +141,14 @@ public class ApiClient {
 
         // Endpoint này yêu cầu phải xác thực, Interceptor sẽ tự thêm token
         Request request = new Request.Builder()
-                .url(BASE_URL + "/users/me/set-pin")
+                .url(BASE_URL + "/user/set-pin")
                 .post(body)
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
+            final String responseBody = response.body().string();
+            System.out.println("DEBUG setPin API: Status Code = " + response.code());
+            System.out.println("DEBUG setPin API: Response Body = " + responseBody);
             if (!response.isSuccessful()) {
                 throw new IOException("Không thể thiết lập PIN: " + response.body().string());
             }

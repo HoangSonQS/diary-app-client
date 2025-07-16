@@ -17,7 +17,7 @@
                 <fx:include fx:id="pinFieldComponent" source="components/pin-field.fxml" />
 
                 <Label fx:id="errorLabel" managed="false" styleClass="error-label" visible="false" />
-                <Button fx:id="createPinButton" onAction="#handleCreatePinAction" prefHeight="40.0" prefWidth="Infinity" styleClass="primary-button" text="Xác nhận và Lưu" />
+                <Button fx:id="createPinButton" defaultButton="true" onAction="#handleCreatePinAction" prefHeight="40.0" prefWidth="Infinity" styleClass="primary-button" text="Xác nhận và Lưu" />
             </children>
             <padding>
                 <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />

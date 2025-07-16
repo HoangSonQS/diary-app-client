@@ -47,7 +47,7 @@
                     </children>
                 </HBox>
                 <Label fx:id="errorLabel" managed="false" styleClass="error-label" visible="false" wrapText="true" />
-                <Button fx:id="loginButton" onAction="#handleLoginButtonAction" prefHeight="40.0" prefWidth="Infinity" styleClass="primary-button" text="Đăng nhập" />
+                <Button fx:id="loginButton" defaultButton="true" onAction="#handleLoginButtonAction" prefHeight="40.0" prefWidth="Infinity" styleClass="primary-button" text="Đăng nhập" />
                 <Hyperlink fx:id="signUpLink" onAction="#handleSignUpLinkAction" text="Chưa có tài khoản? Đăng ký ngay" />
             </children>
             <padding>
