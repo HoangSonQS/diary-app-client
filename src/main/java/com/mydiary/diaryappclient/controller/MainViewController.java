@@ -54,4 +54,7 @@ public class MainViewController {
             // Có thể hiển thị Alert lỗi
         }
     }
+
+    public void handleNewEntryButtonAction(ActionEvent actionEvent) {
+    }
 }
