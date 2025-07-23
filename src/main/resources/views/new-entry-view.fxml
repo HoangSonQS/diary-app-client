@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" maxWidth="600.0" spacing="15.0" styleClass="form-container" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mydiary.diaryappclient.controller.NewEntryController">
+    <children>
+        <Label fx:id="modalTitleLabel" text="Tạo bài viết mới">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+        <TextField fx:id="titleField" promptText="Tiêu đề..." />
+        <TextArea fx:id="contentArea" prefHeight="200.0" promptText="Hôm nay của bạn thế nào..." wrapText="true" VBox.vgrow="ALWAYS" />
+        <HBox alignment="CENTER_RIGHT" spacing="10.0">
+            <children>
+                <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#handleCancelButtonAction" style="-fx-background-color: transparent;" text="Hủy" />
+                <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSaveButtonAction" styleClass="primary-button" text="Lưu bài viết" />
+            </children>
+        </HBox>
+    </children>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+</VBox>

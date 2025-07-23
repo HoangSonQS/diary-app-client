@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mydiary.diaryappclient.model.domain.Entry;
-import com.mydiary.diaryappclient.model.dto.AuthResponse;
-import com.mydiary.diaryappclient.model.dto.HasPinResponse;
-import com.mydiary.diaryappclient.model.dto.LoginRequest;
-import com.mydiary.diaryappclient.model.dto.RegisterRequest;
+import com.mydiary.diaryappclient.model.dto.*;
 
 import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -197,6 +194,62 @@ public class ApiClient {
 
             // Dùng TypeReference để Jackson hiểu cần chuyển đổi JSON array thành List<Entry>
             return objectMapper.readValue(response.body().string(), new TypeReference<List<Entry>>() {});
+        }
+    }
+
+    public void deleteEntry(Long entryId) throws IOException {
+        Request request = new Request.Builder()
+                .url(BASE_URL + "/entries/" + entryId)
+                .delete() // Phương thức DELETE
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Không thể xóa bài viết: " + response.body().string());
+            }
+        }
+    }
+
+    /**
+     * Gửi yêu cầu tạo một bài viết mới
+     * @return Bài viết đã được tạo (bao gồm cả ID mới)
+     */
+    public Entry createEntry(EntryRequest entryRequest) throws IOException {
+        String jsonBody = objectMapper.writeValueAsString(entryRequest);
+        RequestBody body = RequestBody.create(jsonBody, JSON);
+
+        Request request = new Request.Builder()
+                .url(BASE_URL + "/entries")
+                .post(body)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Không thể tạo bài viết mới: " + response.body().string());
+            }
+            return objectMapper.readValue(response.body().string(), Entry.class);
+        }
+    }
+
+    /**
+     * Gửi yêu cầu cập nhật một bài viết đã có
+     * @param entryId ID của bài viết cần cập nhật
+     * @return Bài viết sau khi đã được cập nhật
+     */
+    public Entry updateEntry(Long entryId, EntryRequest entryRequest) throws IOException {
+        String jsonBody = objectMapper.writeValueAsString(entryRequest);
+        RequestBody body = RequestBody.create(jsonBody, JSON);
+
+        Request request = new Request.Builder()
+                .url(BASE_URL + "/entries/" + entryId)
+                .put(body) // Sử dụng phương thức PUT
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Không thể cập nhật bài viết: " + response.body().string());
+            }
+            return objectMapper.readValue(response.body().string(), Entry.class);
         }
     }
 }
