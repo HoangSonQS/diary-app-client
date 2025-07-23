@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -12,8 +13,18 @@ public class Entry {
     private String title;
     private String content; // Có thể là HTML sau này
     @JsonProperty("entryDate") // Báo cho Jackson đọc key "entryDate" từ JSON
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate entryDate;
+
     private LocalDateTime createdAt;
+
+    public LocalDate getEntryDate() {
+        return entryDate;
+    }
+
+    public void setEntryDate(LocalDate entryDate) {
+        this.entryDate = entryDate;
+    }
 
     // Getters and Setters
     public Long getId() {

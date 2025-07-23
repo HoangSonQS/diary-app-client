@@ -98,8 +98,9 @@ public class MainViewController {
                     setGraphic(null);
                 } else {
                     title.setText(item.getTitle());
-                    date.setText(item.getCreatedAt().format(DateTimeFormatter.ofPattern("dd MMMM, yyyy")));
-                    String plainContent = item.getContent().replaceAll("<[^>]*>", "");
+                    if (item.getEntryDate() != null) {
+                        date.setText(item.getEntryDate().format(DateTimeFormatter.ofPattern("dd MMMM, yyyy")));
+                    }                    String plainContent = item.getContent().replaceAll("<[^>]*>", "");
                     snippet.setText(plainContent.substring(0, Math.min(plainContent.length(), 100)) + "...");
                     setGraphic(vbox);
                 }
@@ -116,8 +117,9 @@ public class MainViewController {
     private void displayEntryDetails(Entry entry) {
         showPlaceholder(false);
         entryTitleLabel.setText(entry.getTitle());
-        entryDateLabel.setText(entry.getCreatedAt().format(DateTimeFormatter.ofPattern("HH:mm, EEEE, dd MMMM yyyy")));
-        entryContentView.getEngine().loadContent(entry.getContent());
+        if (entry.getEntryDate() != null) {
+            entryDateLabel.setText(entry.getEntryDate().format(DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy")));
+        }        entryContentView.getEngine().loadContent(entry.getContent());
     }
 
     private void showPlaceholder(boolean show) {

@@ -37,6 +37,10 @@ public class MainApplication extends Application {
                     // Nếu có người dùng cũ, gọi API để kiểm tra PIN
                     boolean hasPin = ApiClient.getInstance().hasPin(lastUser);
 
+
+                    System.out.println("DEBUG: User '" + lastUser + "' có PIN không? -> " + hasPin);
+
+
                     // Cập nhật giao diện trên luồng JavaFX
                     Platform.runLater(() -> {
                         try {

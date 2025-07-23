@@ -53,6 +53,7 @@
                             <children>
                                 <VBox fx:id="entryDetailView" spacing="10.0" styleClass="entry-detail-view" visible="false">
                                     <children>
+                                        <Label fx:id="entryTitleLabel" styleClass="entry-detail-title" text="Tiêu đề bài viết" />
                                         <Label fx:id="entryDateLabel" styleClass="entry-detail-date" text="Ngày tháng" />
                                         <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
                                             <content>
