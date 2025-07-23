@@ -1,6 +1,6 @@
 package com.mydiary.diaryappclient.controller;
 
-import com.mydiary.diaryappclient.model.AuthResponse;
+import com.mydiary.diaryappclient.model.dto.AuthResponse;
 import com.mydiary.diaryappclient.service.ApiClient;
 import com.mydiary.diaryappclient.service.AuthService;
 import com.mydiary.diaryappclient.service.CredentialManager;

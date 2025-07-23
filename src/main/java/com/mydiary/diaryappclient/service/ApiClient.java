@@ -1,14 +1,17 @@
 package com.mydiary.diaryappclient.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mydiary.diaryappclient.model.AuthResponse;
-import com.mydiary.diaryappclient.model.HasPinResponse;
-import com.mydiary.diaryappclient.model.LoginRequest;
-import com.mydiary.diaryappclient.model.RegisterRequest;
+import com.mydiary.diaryappclient.model.domain.Entry;
+import com.mydiary.diaryappclient.model.dto.AuthResponse;
+import com.mydiary.diaryappclient.model.dto.HasPinResponse;
+import com.mydiary.diaryappclient.model.dto.LoginRequest;
+import com.mydiary.diaryappclient.model.dto.RegisterRequest;
 import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.IOException;
+import java.util.List;
 
 public class ApiClient {
     private static final String BASE_URL = "http://localhost:8080/api";
@@ -168,6 +171,23 @@ public class ApiClient {
             }
             HasPinResponse hasPinResponse = objectMapper.readValue(response.body().string(), HasPinResponse.class);
             return hasPinResponse.getHasPin();
+        }
+    }
+
+    public List<Entry> getEntries() throws IOException {
+        // Endpoint này yêu-cầu xác-thực, Interceptor sẽ tự-động thêm token
+        Request request = new Request.Builder()
+                .url(BASE_URL + "/entries")
+                .get()
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Không thể tải danh-sách nhật-ký: " + response.body().string());
+            }
+
+            // Dùng TypeReference để Jackson hiểu cần chuyển đổi JSON array thành List<Entry>
+            return objectMapper.readValue(response.body().string(), new TypeReference<List<Entry>>() {});
         }
     }
 }

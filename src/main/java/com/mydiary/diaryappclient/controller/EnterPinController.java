@@ -1,12 +1,11 @@
 package com.mydiary.diaryappclient.controller;
 
 import com.mydiary.diaryappclient.controller.components.PinFieldController;
-import com.mydiary.diaryappclient.model.AuthResponse;
+import com.mydiary.diaryappclient.model.dto.AuthResponse;
 import com.mydiary.diaryappclient.service.ApiClient;
 import com.mydiary.diaryappclient.service.AuthService;
 import com.mydiary.diaryappclient.service.CredentialManager;
 import com.mydiary.diaryappclient.util.SceneManager;
-import com.mydiary.diaryappclient.util.SecurityUtil;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;

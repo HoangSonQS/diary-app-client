@@ -1,4 +1,4 @@
-package com.mydiary.diaryappclient.model;
+package com.mydiary.diaryappclient.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

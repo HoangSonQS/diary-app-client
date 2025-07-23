@@ -1,4 +1,4 @@
-package com.mydiary.diaryappclient.model;
+package com.mydiary.diaryappclient.model.dto;
 
 import lombok.Getter;
 import lombok.Setter;
