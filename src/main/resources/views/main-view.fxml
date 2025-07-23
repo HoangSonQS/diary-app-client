@@ -6,57 +6,74 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.web.WebView?>
-
 <?import javafx.scene.layout.Pane?>
-<BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mydiary.diaryappclient.controller.MainViewController">
-    <top>
-        <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="20.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #E0E0E0; -fx-border-width: 0 0 1 0;">
-            <children>
-                <Label text="Ultimate Diary" textFill="#34495E">
-                    <font>
-                        <Font name="System Bold" size="18.0" />
-                    </font>
-                </Label>
-                <Button fx:id="newEntryButton" mnemonicParsing="false" onAction="#handleNewEntryButtonAction" styleClass="primary-button" text="+ Bài viết mới" />
-                <Pane HBox.hgrow="ALWAYS" />
-                <Label fx:id="welcomeLabel" text="Chào mừng!" />
-                <Button fx:id="setPinButton" mnemonicParsing="false" onAction="#handleSetPinButtonAction" text="Cài đặt PIN" />
-                <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogoutButtonAction" text="Đăng xuất" />
-            </children>
-            <padding>
-                <Insets left="20.0" right="20.0" />
-            </padding>
-        </HBox>
-    </top>
-    <center>
-        <SplitPane dividerPositions="0.3" BorderPane.alignment="CENTER">
-            <items>
-                <ListView fx:id="entriesListView" prefHeight="200.0" prefWidth="200.0" />
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.web.WebView?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-                <ScrollPane fitToWidth="true">
-                    <content>
-                        <VBox fx:id="entryDetailView" alignment="TOP_CENTER" spacing="10.0" style="-fx-background-color: #FFFFFF;">
+<StackPane fx:id="rootStackPane" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mydiary.diaryappclient.controller.MainViewController">
+    <children>
+        <BorderPane fx:id="mainContentPane">
+            <top>
+                <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="20.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #E0E0E0; -fx-border-width: 0 0 1 0;">
+                    <children>
+                        <Label styleClass="app-title" text="Ultimate Diary" />
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Button fx:id="setPinButton" mnemonicParsing="false" onAction="#handleSetPinButtonAction" text="Cài đặt PIN" />
+                        <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogoutButtonAction" text="Đăng xuất" />
+                    </children>
+                    <padding>
+                        <Insets left="20.0" right="20.0" />
+                    </padding>
+                </HBox>
+            </top>
+            <center>
+                <SplitPane fx:id="mainSplitPane" dividerPositions="0.30" styleClass="main-split-pane" BorderPane.alignment="CENTER">
+                    <items>
+                        <VBox fx:id="sidebar" spacing="15.0" styleClass="sidebar" minWidth="280.0" prefWidth="320.0" maxWidth="450.0">
                             <children>
-                                <Label fx:id="entryTitleLabel" text="Chọn một bài viết để xem">
-                                    <font>
-                                        <Font name="System Bold" size="22.0" />
-                                    </font>
-                                </Label>
-                                <Label fx:id="entryDateLabel" textFill="#7F8C8D" />
-                                <WebView fx:id="entryContentView" prefHeight="200.0" />
+                                <Button fx:id="newEntryButton" mnemonicParsing="false" onAction="#handleNewEntryButtonAction" styleClass="new-post-button" text="+ Bài viết mới" prefWidth="Infinity"/>
+                                <TextField fx:id="searchField" promptText="Tìm kiếm..." styleClass="search-field" />
+                                <ListView fx:id="entriesListView" styleClass="entries-list-view" VBox.vgrow="ALWAYS" />
+                                <HBox fx:id="userInfoBox" alignment="CENTER_LEFT" spacing="10.0" styleClass="user-info-box">
+                                    <children>
+                                        <ImageView fx:id="avatarImageView" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+                                        <Label fx:id="usernameLabel" styleClass="username-label" text="Username" />
+                                    </children>
+                                </HBox>
                             </children>
-                            <padding>
-                                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                            </padding>
                         </VBox>
-                    </content>
-                </ScrollPane>
-            </items>
-        </SplitPane>
-    </center>
-</BorderPane>
+                        <StackPane fx:id="contentArea" style="-fx-background-color: white;">
+                            <children>
+                                <VBox fx:id="entryDetailView" spacing="10.0" styleClass="entry-detail-view" visible="false">
+                                    <children>
+                                        <Label fx:id="entryTitleLabel" styleClass="entry-detail-title" text="Tiêu đề bài viết" />
+                                        <Label fx:id="entryDateLabel" styleClass="entry-detail-date" text="Ngày tháng" />
+                                        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                                            <content>
+                                                <WebView fx:id="entryContentView" />
+                                            </content>
+                                        </ScrollPane>
+                                    </children>
+                                </VBox>
+                                <VBox fx:id="contentPlaceholder" styleClass="content-placeholder">
+                                    <children>
+                                        <FontIcon iconLiteral="fas-sticky-note" />
+                                        <Label text="Chọn một bài viết để xem" />
+                                    </children>
+                                </VBox>
+                            </children>
+                        </StackPane>
+                    </items>
+                </SplitPane>
+            </center>
+        </BorderPane>
+        <StackPane  fx:id="modalPane" style="-fx-background-color: rgba(0, 0, 0, 0.4);" visible="false" />
+    </children>
+</StackPane>

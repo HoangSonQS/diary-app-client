@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mydiary.diaryappclient.controller.CreatePinController">
+<StackPane stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mydiary.diaryappclient.controller.CreatePinController" maxHeight="310">
     <children>
         <VBox alignment="CENTER" maxWidth="400" spacing="20.0" styleClass="form-container">
             <children>
@@ -17,7 +17,11 @@
                 <fx:include fx:id="pinFieldComponent" source="components/pin-field.fxml" />
 
                 <Label fx:id="errorLabel" managed="false" styleClass="error-label" visible="false" />
+
                 <Button fx:id="createPinButton" defaultButton="true" onAction="#handleCreatePinAction" prefHeight="40.0" prefWidth="Infinity" styleClass="primary-button" text="Xác nhận và Lưu" />
+
+                <Button fx:id="backButton" mnemonicParsing="false" onAction="#handleBackButtonAction" style="-fx-background-color: transparent;" text="Quay về" />
+
             </children>
             <padding>
                 <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />

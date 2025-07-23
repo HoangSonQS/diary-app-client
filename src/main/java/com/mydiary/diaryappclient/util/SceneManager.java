@@ -12,22 +12,18 @@ import java.util.Objects;
 
 public class SceneManager {
 
-    /**
-     * -- SETTER --
-     *  Phương thức này phải được gọi một lần duy nhất trong lớp MainApplication
-     *  để lưu lại cửa sổ chính (Stage).
-     */
     @Setter
     private static Stage primaryStage;
 
-    /**
-     * Tải và chuyển sang một Scene mới từ một file FXML.
-     *
-     * @param fxmlFile Tên của file FXML (ví dụ: "login-view.fxml").
-     * @param title    Tiêu đề mới cho cửa sổ.
-     * @throws IOException Nếu không thể tải file FXML.
-     */
     public static Object switchScene(String fxmlFile, String title) throws IOException {
+        return switchScene(fxmlFile, title, false);
+    }
+
+    public static Object switchScene(String fxmlFile, String title, boolean maximize) throws IOException {
+        // Luôn luôn phóng to nếu file được yêu cầu là màn hình chính
+        if ("main-view.fxml".equals(fxmlFile)) {
+            maximize = true;
+        }
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("/views/" + fxmlFile));
         Parent root = loader.load();
 
@@ -38,11 +34,15 @@ public class SceneManager {
         }
 
         primaryStage.setTitle(title);
-        primaryStage.sizeToScene();
-        primaryStage.show();
-        primaryStage.centerOnScreen();
 
-        // Trả về controller của màn hình mới
+        primaryStage.setMaximized(maximize);
+        primaryStage.show();
+
+        if (!maximize) {
+            primaryStage.sizeToScene();
+            primaryStage.centerOnScreen();
+        }
+
         return loader.getController();
     }
 }

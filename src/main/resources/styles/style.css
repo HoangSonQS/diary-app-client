@@ -144,56 +144,119 @@
 }
 
 
-/* --- CSS CHO MÀN HÌNH CHÍNH --- */
+/* ==========================================================================
+   MAIN VIEW STYLES
+   ========================================================================== */
 
-/* Tùy chỉnh ListView */
-.list-view {
-    -fx-border-width: 0;
-    -fx-padding: 0;
+/* --- Bố cục chính --- */
+.main-split-pane > .split-pane-divider {
+    -fx-background-color: #E2E8F0; /* Màu đường phân cách */
+    -fx-padding: 0 1px 0 0;
 }
 
-/* Tùy chỉnh từng ô (cell) trong ListView */
-.list-cell {
+/* --- Sidebar (Cột trái) --- */
+.sidebar {
+    -fx-background-color: #F8FAFC;
+    -fx-padding: 20px;
+}
+
+.app-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1E293B;
+}
+
+.new-post-button {
+    -fx-background-color: #2563EB;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-pref-height: 36px;
+}
+.new-post-button .ikonli-font-icon {
+    -fx-icon-color: white;
+}
+
+.search-field {
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-prompt-text-fill: #64748B;
+}
+
+/* --- Danh sách bài viết --- */
+.entries-list-view {
     -fx-background-color: transparent;
-    -fx-padding: 15px;
-    -fx-border-width: 0 0 1px 0;
-    -fx-border-color: #f0f0f0;
-    -fx-font-size: 14px;
 }
 
-/*!* Bỏ viền của ô cuối cùng *!*/
-/*.list-cell:last-child {*/
-/*    -fx-border-width: 0;*/
-/*}*/
-
-/* Style cho ô khi được di chuột qua */
-.list-cell:filled:hover {
-    -fx-background-color: #f5f5f5;
+.entries-list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 10px 5px;
+    -fx-border-width: 0;
+    -fx-background-insets: 0;
 }
 
-/* Style cho ô khi được chọn */
-.list-cell:filled:selected {
-    -fx-background-color: #3498DB; /* Màu accent */
+.entries-list-view .list-cell:filled:hover {
+    -fx-background-color: #EFF6FF; /* Xanh dương rất nhạt */
+    -fx-background-radius: 6px;
 }
 
-/* Style cho chữ bên trong ô khi được chọn */
-.list-cell:filled:selected .text {
-    -fx-fill: white;
+.entries-list-view .list-cell:filled:selected {
+    -fx-background-color: #DBEAFE; /* Xanh dương nhạt */
+    -fx-background-radius: 6px;
+}
+
+/* Nội dung bên trong một list-cell */
+.entry-cell-title {
     -fx-font-weight: bold;
+    -fx-text-fill: #1E293B;
 }
 
-/* -- Panel chi tiết bài viết -- */
-#entryDetailView {
-    -fx-background-color: #ffffff;
+.entry-cell-date {
+    -fx-text-fill: #64748B;
+    -fx-font-size: 12px;
 }
 
-#entryTitleLabel {
-    -fx-font-size: 26px;
-    -fx-text-fill: #34495E;
+.entry-cell-snippet {
+    -fx-text-fill: #334155;
+}
+
+/* --- Khu vực người dùng --- */
+.user-info-box {
+    -fx-padding: 10px;
+    -fx-border-width: 1px 0 0 0;
+    -fx-border-color: #E2E8F0;
+}
+
+.username-label {
     -fx-font-weight: bold;
+    -fx-text-fill: #1E293B;
 }
 
-#entryDateLabel {
-    -fx-font-size: 13px;
-    -fx-text-fill: #7f8c8d;
+/* --- Khu vực nội dung (Cột phải) --- */
+.content-placeholder {
+    -fx-alignment: center;
+    -fx-spacing: 20px;
+    -fx-background-color: white;
+}
+.content-placeholder .ikonli-font-icon {
+    -fx-icon-size: 48px;
+    -fx-icon-color: #CBD5E1;
+}
+.content-placeholder .label {
+    -fx-font-size: 18px;
+    -fx-text-fill: #64748B;
+}
+
+.entry-detail-view {
+    -fx-padding: 40px;
+    -fx-spacing: 10px;
+    -fx-background-color: white;
+}
+.entry-detail-title {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1E293B;
+}
+.entry-detail-date {
+    -fx-text-fill: #64748B;
 }

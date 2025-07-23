@@ -14,6 +14,15 @@ public class MainApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+
+//        // Đặt kích thước mặc định khi mở ứng dụng
+//        stage.setWidth(1280);
+//        stage.setHeight(768);
+//
+//        // Đặt kích thước tối thiểu để tránh cửa sổ quá nhỏ
+//        stage.setMinWidth(1024);
+//        stage.setMinHeight(720);
+
         SceneManager.setPrimaryStage(stage);
         // Hiển thị màn hình "Đang tải..." ngay lập tức
         SceneManager.switchScene("loading-view.fxml", "Đang tải...");

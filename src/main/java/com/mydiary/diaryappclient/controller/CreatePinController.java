@@ -1,6 +1,7 @@
 package com.mydiary.diaryappclient.controller;
 
 import com.mydiary.diaryappclient.controller.components.PinFieldController;
+import com.mydiary.diaryappclient.controller.interfaces.IClosable;
 import com.mydiary.diaryappclient.service.ApiClient;
 import com.mydiary.diaryappclient.service.AuthService;
 import com.mydiary.diaryappclient.service.CredentialManager;
@@ -14,10 +15,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import java.io.IOException;
 
-public class CreatePinController {
+public class CreatePinController implements IClosable {
 
     @FXML private Label errorLabel;
     @FXML private Button createPinButton;
+
+    private Runnable onClose;
 
 
     @FXML
@@ -102,5 +105,18 @@ public class CreatePinController {
     private void showError(String message) {
         errorLabel.setText(message);
         errorLabel.setVisible(true);
+    }
+
+    @Override
+    public void setOnClose(Runnable action) {
+        this.onClose = action;
+    }
+
+    @FXML
+    void handleBackButtonAction(ActionEvent event) {
+        // Nếu hành động đóng đã được gán, hãy thực thi nó
+        if (onClose != null) {
+            onClose.run();
+        }
     }
 }
