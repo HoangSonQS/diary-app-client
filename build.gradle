@@ -65,6 +65,9 @@ dependencies {
     // Module cho bộ icon FontAwesome 5 (quan trọng)
     implementation 'org.kordamp.ikonli:ikonli-fontawesome5-pack:12.3.1'
 
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
+
 }
 
 test {

@@ -2,13 +2,17 @@ package com.mydiary.diaryappclient.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mydiary.diaryappclient.model.domain.Entry;
 import com.mydiary.diaryappclient.model.dto.AuthResponse;
 import com.mydiary.diaryappclient.model.dto.HasPinResponse;
 import com.mydiary.diaryappclient.model.dto.LoginRequest;
 import com.mydiary.diaryappclient.model.dto.RegisterRequest;
+
 import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;
+
 
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +22,7 @@ public class ApiClient {
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     private final OkHttpClient client;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
     private static ApiClient instance;
 
     public static synchronized ApiClient getInstance() {
@@ -61,8 +65,13 @@ public class ApiClient {
         // 3. Thêm logger vào cuối cùng để nó in ra request cuối cùng
         builder.addInterceptor(loggingInterceptor);
 
+        this.objectMapper = new ObjectMapper();
+        // Đăng ký module để hiểu LocalDateTime
+        this.objectMapper.registerModule(new JavaTimeModule());
+        // Cấu hình để không ghi ngày tháng dưới dạng Timestamps (con số)
+        this.objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
         this.client = builder.build();
-        // --- KẾT THÚC THAY ĐỔI ---
     }
 
     public AuthResponse login(String username, String password) throws IOException {
