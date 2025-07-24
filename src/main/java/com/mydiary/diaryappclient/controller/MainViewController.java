@@ -136,7 +136,10 @@ public class MainViewController {
         if (entry.getEntryDate() != null) {
             entryDateLabel.setText(entry.getEntryDate().format(DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy")));
         }
-        entryContentView.getEngine().loadContent(entry.getContent());
+        String contentWithLineBreaks = "<html><body style='white-space: pre-wrap; word-wrap: break-word;'>"
+                + entry.getContent()
+                + "</body></html>";
+        entryContentView.getEngine().loadContent(contentWithLineBreaks);
         switchContentView(ContentViewMode.DETAIL);
     }
 
