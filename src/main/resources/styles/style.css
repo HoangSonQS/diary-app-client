@@ -260,3 +260,10 @@
 .entry-detail-date {
     -fx-text-fill: #64748B;
 }
+
+.list-view .scroll-bar:horizontal,
+.scroll-pane .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+}
