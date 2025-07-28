@@ -170,8 +170,13 @@
     -fx-background-color: #2563EB;
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-background-radius: 8px;
+    -fx-background-radius: 6px;
     -fx-pref-height: 36px;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+}
+.new-post-button:hover {
+    -fx-background-color: #1D4ED8; /* Xanh đậm hơn */
 }
 .new-post-button .ikonli-font-icon {
     -fx-icon-color: white;
@@ -275,4 +280,49 @@
     -fx-pref-height: 0;
     -fx-max-width: 0;
     -fx-max-height: 0;
+}
+
+.secondary-button {
+    -fx-background-color: #F1F5F9; /* Nền xám rất nhạt */
+    -fx-text-fill: #0F172A;      /* Chữ xám đen */
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-border-width: 0;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+}
+.secondary-button:hover {
+    -fx-background-color: #E2E8F0; /* Xám đậm hơn khi hover */
+}
+
+.delete-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #EF4444;      /* Chữ màu đỏ */
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-border-color: #EF4444;   /* Viền đỏ */
+    -fx-border-radius: 6px;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+}
+.delete-button:hover {
+    -fx-background-color: #FEE2E2; /* Nền đỏ rất nhạt khi hover */
+}
+.delete-button .ikonli-font-icon {
+    -fx-icon-color: white;
+}
+
+.top-bar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #64748B; /* Màu chữ phụ */
+    -fx-border-color: #E2E8F0;
+    -fx-border-radius: 6px;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+.top-bar-button:hover {
+    -fx-background-color: #acafaf; /* Nền xám rất nhạt khi hover */
+    -fx-border-color: #E2E8F0;
 }
