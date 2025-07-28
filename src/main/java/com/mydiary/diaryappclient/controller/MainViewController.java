@@ -22,6 +22,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -52,7 +53,7 @@ public class MainViewController {
     // Editor View Components
     @FXML private Label editorModeLabel;
     @FXML private TextField editorTitleField;
-    @FXML private TextArea editorContentArea;
+    @FXML private HTMLEditor editorContentArea;
     @FXML private Button saveEntryButton;
     @FXML private Button cancelEditButton;
 
@@ -194,7 +195,7 @@ public class MainViewController {
         currentlyEditingEntry = null;
         editorModeLabel.setText("Tạo bài viết mới");
         editorTitleField.clear();
-        editorContentArea.clear();
+        editorContentArea.setHtmlText("");
         switchContentView(ContentViewMode.EDITOR);
     }
 
@@ -299,7 +300,7 @@ public class MainViewController {
         currentlyEditingEntry = selectedEntry;
         editorModeLabel.setText("Chỉnh sửa bài viết");
         editorTitleField.setText(selectedEntry.getTitle());
-        editorContentArea.setText(selectedEntry.getContent());
+        editorContentArea.setHtmlText(selectedEntry.getContent());
         switchContentView(ContentViewMode.EDITOR);
     }
 
@@ -310,7 +311,7 @@ public class MainViewController {
     @FXML
     void handleSaveEntryButtonAction(ActionEvent event) {
         String title = editorTitleField.getText();
-        String content = editorContentArea.getText();
+        String content = editorContentArea.getHtmlText();
         EntryRequest request = new EntryRequest(title, content);
         saveEntryButton.setDisable(true);
 
