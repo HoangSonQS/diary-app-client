@@ -92,7 +92,9 @@ public class MainViewController {
 
     private void setupEntriesListView() {
         entriesListView.setItems(entryList);
+
         entriesListView.setCellFactory(lv -> new ListCell<>() {
+            // Thêm lại snippet Label
             private final Label title = new Label();
             private final Label date = new Label();
             private final VBox vbox = new VBox(title, date);
@@ -101,20 +103,39 @@ public class MainViewController {
                 title.getStyleClass().add("entry-cell-title");
                 date.getStyleClass().add("entry-cell-date");
                 VBox.setMargin(date, new Insets(2, 0, 2, 0));
-
                 title.setWrapText(true);
             }
 
             @Override
             protected void updateItem(Entry item, boolean empty) {
                 super.updateItem(item, empty);
+
+                // Luôn reset trạng thái của cell
+                getStyleClass().remove("primary-entry-cell");
+                title.getStyleClass().remove("primary-entry-title");
+
                 if (empty || item == null) {
                     setGraphic(null);
+                    setText(null);
                 } else {
-                    title.setText(item.getTitle());
+                    // Chỉ thực hiện các thao tác khi chắc chắn 'item' không null
+                    String titleText = item.getTitle();
+                    if (Boolean.TRUE.equals(item.isPrimary())) {
+                        getStyleClass().add("primary-entry-cell");
+                        title.setText("★ " + titleText);
+                        if (!title.getStyleClass().contains("primary-entry-title")) {
+                            title.getStyleClass().add("primary-entry-title");
+                        }
+                    } else {
+                        title.setText(titleText);
+                    }
+
                     if (item.getEntryDate() != null) {
                         date.setText(item.getEntryDate().format(DateTimeFormatter.ofPattern("dd MMMM, yyyy")));
-                    }                    String plainContent = item.getContent().replaceAll("<[^>]*>", "");
+                    }
+
+                    // Cập nhật lại snippet
+                    String plainContent = item.getContent().replaceAll("<[^>]*>", "");
                     setGraphic(vbox);
                 }
             }

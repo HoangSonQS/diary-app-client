@@ -326,3 +326,14 @@
     -fx-background-color: #acafaf; /* Nền xám rất nhạt khi hover */
     -fx-border-color: #E2E8F0;
 }
+
+.primary-entry-title {
+    -fx-font-weight: 900; /* In đậm hơn */
+    -fx-text-fill: #2563EB; /* Dùng màu nhấn */
+}
+
+.primary-entry-cell {
+    -fx-background-color: #F0FDF4; /* Màu xanh lá rất nhạt */
+    -fx-border-width: 0 0 1px 4px;  /* Viền trái dày 4px để làm nổi bật */
+    -fx-border-color: transparent transparent #E2E8F0 #22C55E; /* Viền trái màu xanh lá cây */
+}
