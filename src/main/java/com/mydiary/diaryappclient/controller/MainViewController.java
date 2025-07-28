@@ -95,14 +95,14 @@ public class MainViewController {
         entriesListView.setCellFactory(lv -> new ListCell<>() {
             private final Label title = new Label();
             private final Label date = new Label();
-            private final Label snippet = new Label();
-            private final VBox vbox = new VBox(title, date, snippet);
+            private final VBox vbox = new VBox(title, date);
 
             {
                 title.getStyleClass().add("entry-cell-title");
                 date.getStyleClass().add("entry-cell-date");
-                snippet.getStyleClass().add("entry-cell-snippet");
                 VBox.setMargin(date, new Insets(2, 0, 2, 0));
+
+                title.setWrapText(true);
             }
 
             @Override
@@ -115,7 +115,6 @@ public class MainViewController {
                     if (item.getEntryDate() != null) {
                         date.setText(item.getEntryDate().format(DateTimeFormatter.ofPattern("dd MMMM, yyyy")));
                     }                    String plainContent = item.getContent().replaceAll("<[^>]*>", "");
-                    snippet.setText(plainContent.substring(0, Math.min(plainContent.length(), 100)) + "...");
                     setGraphic(vbox);
                 }
             }
@@ -137,7 +136,10 @@ public class MainViewController {
         if (entry.getEntryDate() != null) {
             entryDateLabel.setText(entry.getEntryDate().format(DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy")));
         }
-        entryContentView.getEngine().loadContent(entry.getContent());
+        String contentWithLineBreaks = "<html><body style='white-space: pre-wrap; word-wrap: break-word;'>"
+                + entry.getContent()
+                + "</body></html>";
+        entryContentView.getEngine().loadContent(contentWithLineBreaks);
         switchContentView(ContentViewMode.DETAIL);
     }
 
