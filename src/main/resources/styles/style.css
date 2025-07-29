@@ -144,196 +144,228 @@
 }
 
 
-/* ==========================================================================
-   MAIN VIEW STYLES
-   ========================================================================== */
+/* ----------------------------- */
+/* RESET / BASE COLOR VARIABLES */
+/* ----------------------------- */
+.root {
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-font-size: 14px;
 
-/* --- Bố cục chính --- */
-.main-split-pane > .split-pane-divider {
-    -fx-background-color: #E2E8F0; /* Màu đường phân cách */
-    -fx-padding: 0 1px 0 0;
+    -primary-color: #4F46E5;
+    -primary-dark-color: #4338CA;
+    -primary-light-color: #E0E7FF;
+    -danger-color: #EF4444;
+    -danger-hover-color: #DC2626;
+
+    -surface-background: #F8FAFC;
+    -surface-1: #FFFFFF;
+    -surface-2: #F1F5F9;
+    -surface-3: #E2E8F0;
+
+    -text-primary: #1E293B;
+    -text-secondary: #64748B;
+    -text-on-primary: #FFFFFF;
 }
 
-/* --- Sidebar (Cột trái) --- */
-.sidebar {
-    -fx-background-color: #F8FAFC;
-    -fx-padding: 20px;
+.root.dark {
+    /* Bảng màu */
+    -primary-color: #818CF8;
+    -primary-dark-color: #6366F1;
+    -primary-light-color: #312E81;
+    -danger-color: #F87171;
+    -danger-hover-color: #EF4444;
+
+    /* Màu nền */
+    -surface-background: #111827;
+    -surface-1: #1F2937;
+    -surface-2: #374151;
+    -surface-3: #4B5563;
+
+    /* Màu chữ */
+    -text-primary: #F9FAFB;
+    -text-secondary: #9CA3AF;
+    -text-on-primary: #111827;
 }
 
+/* -------------------- */
+/* HEADER               */
+/* -------------------- */
+.app-header {
+    -fx-background-color: -surface-1;
+    -fx-padding: 0 24px;
+    -fx-spacing: 16px;
+    -fx-pref-height: 72px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 10, 0, 0, 2);
+    -fx-border-color: -surface-3;
+    -fx-border-width: 0 0 1px 0;
+}
 .app-title {
     -fx-font-size: 20px;
     -fx-font-weight: bold;
-    -fx-text-fill: #1E293B;
+    -fx-text-fill: -text-primary;
 }
 
-.new-post-button {
-    -fx-background-color: #2563EB;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-background-radius: 6px;
-    -fx-pref-height: 36px;
-    -fx-cursor: hand;
-    -fx-font-size: 13px;
-}
-.new-post-button:hover {
-    -fx-background-color: #1D4ED8; /* Xanh đậm hơn */
-}
-.new-post-button .ikonli-font-icon {
-    -fx-icon-color: white;
+/* -------------------- */
+/* SIDEBAR              */
+/* -------------------- */
+.sidebar {
+    -fx-background-color: -surface-2;
+    -fx-padding: 20px;
+    -fx-spacing: 20px;
+    -fx-border-width: 0 1px 0 0;
+    -fx-border-color: -surface-3;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.04), 6, 0.1, 0, 0);
 }
 
 .search-field {
+    -fx-background-color: -surface-1;
     -fx-background-radius: 8px;
-    -fx-border-radius: 8px;
-    -fx-prompt-text-fill: #64748B;
+    -fx-padding: 6px 12px;
+    -fx-prompt-text-fill: -text-secondary;
+    -fx-text-fill: -text-primary;
+    -fx-border-color: transparent;
+}
+.search-field:focused {
+    -fx-border-color: -primary-color;
+    -fx-border-width: 1px;
 }
 
-/* --- Danh sách bài viết --- */
+/* ---------------------------- */
+/* ENTRY LIST IN SIDEBAR       */
+/* ---------------------------- */
 .entries-list-view {
     -fx-background-color: transparent;
 }
-
 .entries-list-view .list-cell {
+    -fx-padding: 10px 14px;
+    -fx-background-radius: 8px;
     -fx-background-color: transparent;
-    -fx-padding: 10px 5px;
-    -fx-border-width: 0;
-    -fx-background-insets: 0;
 }
-
 .entries-list-view .list-cell:filled:hover {
-    -fx-background-color: #EFF6FF; /* Xanh dương rất nhạt */
-    -fx-background-radius: 6px;
+    -fx-background-color: #e0e7ff;
 }
-
 .entries-list-view .list-cell:filled:selected {
-    -fx-background-color: #DBEAFE; /* Xanh dương nhạt */
-    -fx-background-radius: 6px;
+    -fx-background-color: -primary-light-color;
 }
 
-/* Nội dung bên trong một list-cell */
 .entry-cell-title {
     -fx-font-weight: bold;
-    -fx-text-fill: #1E293B;
+    -fx-text-fill: -text-primary;
+}
+.entry-cell-date, .entry-cell-snippet {
+    -fx-text-fill: -text-secondary;
 }
 
-.entry-cell-date {
-    -fx-text-fill: #64748B;
-    -fx-font-size: 12px;
-}
-
-.entry-cell-snippet {
-    -fx-text-fill: #334155;
-}
-
-/* --- Khu vực người dùng --- */
+/* ---------------------------- */
+/* USER INFO BOX               */
+/* ---------------------------- */
 .user-info-box {
-    -fx-padding: 10px;
+    -fx-padding: 16px 0 0 0;
     -fx-border-width: 1px 0 0 0;
-    -fx-border-color: #E2E8F0;
+    -fx-border-color: -surface-3;
 }
-
 .username-label {
     -fx-font-weight: bold;
-    -fx-text-fill: #1E293B;
+    -fx-text-fill: -text-primary;
 }
 
-/* --- Khu vực nội dung (Cột phải) --- */
+/* ---------------------------- */
+/* MAIN CONTENT AREA           */
+/* ---------------------------- */
+.content-area {
+    -fx-background-color: -surface-background;
+    -fx-padding: 32px;
+}
+
 .content-placeholder {
     -fx-alignment: center;
     -fx-spacing: 20px;
-    -fx-background-color: white;
 }
-.content-placeholder .ikonli-font-icon {
-    -fx-icon-size: 48px;
-    -fx-icon-color: #CBD5E1;
+.placeholder-icon .ikonli-font-icon {
+    -fx-icon-color: -surface-3;
+    -fx-icon-size: 36px;
 }
-.content-placeholder .label {
+.placeholder-text {
+    -fx-text-fill: -text-secondary;
     -fx-font-size: 18px;
-    -fx-text-fill: #64748B;
 }
 
+/* Chi tiết bài viết */
 .entry-detail-view {
-    -fx-padding: 40px;
-    -fx-spacing: 10px;
-    -fx-background-color: white;
+    -fx-background-color: -surface-1;
+    -fx-padding: 32px 48px;
+    -fx-spacing: 18px;
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.03), 8, 0, 0, 2);
 }
-.entry-detail-title {
-    -fx-font-size: 32px;
+
+.entry-title {
+    -fx-font-size: 28px;
     -fx-font-weight: bold;
-    -fx-text-fill: #1E293B;
+    -fx-text-fill: -text-primary;
 }
-.entry-detail-date {
-    -fx-text-fill: #64748B;
-}
-
-.list-view .scroll-bar:horizontal,
-.scroll-pane .scroll-bar:horizontal {
-    -fx-opacity: 0;
-    -fx-pref-height: 0;
-    -fx-max-height: 0;
-}
-
-.scroll-pane > .scroll-bar:vertical,
-.scroll-pane > .scroll-bar:horizontal {
-    -fx-opacity: 0;         /* Làm cho thanh cuộn hoàn toàn trong suốt */
-    -fx-pref-width: 0;      /* Đặt các kích thước về 0 để nó không chiếm không gian */
-    -fx-pref-height: 0;
-    -fx-max-width: 0;
-    -fx-max-height: 0;
-}
-
-.secondary-button {
-    -fx-background-color: #F1F5F9; /* Nền xám rất nhạt */
-    -fx-text-fill: #0F172A;      /* Chữ xám đen */
-    -fx-font-weight: bold;
-    -fx-background-radius: 6px;
-    -fx-border-width: 0;
-    -fx-cursor: hand;
+.entry-date {
     -fx-font-size: 13px;
+    -fx-text-fill: -text-secondary;
 }
-.secondary-button:hover {
-    -fx-background-color: #E2E8F0; /* Xám đậm hơn khi hover */
-}
-
-.delete-button {
+.content-scroll-pane {
     -fx-background-color: transparent;
-    -fx-text-fill: #EF4444;      /* Chữ màu đỏ */
-    -fx-font-weight: bold;
-    -fx-background-radius: 6px;
-    -fx-border-color: #EF4444;   /* Viền đỏ */
-    -fx-border-radius: 6px;
-    -fx-border-width: 1px;
-    -fx-cursor: hand;
-    -fx-font-size: 13px;
+    -fx-padding: 8px 0;
+    -fx-hbar-policy: never; /* Tắt thanh cuộn ngang */
+    -fx-vbar-policy: never; /* Tắt thanh cuộn dọc */
 }
-.delete-button:hover {
-    -fx-background-color: #FEE2E2; /* Nền đỏ rất nhạt khi hover */
-}
-.delete-button .ikonli-font-icon {
-    -fx-icon-color: white;
-}
-
-.top-bar-button {
+.content-scroll-pane > .viewport {
     -fx-background-color: transparent;
-    -fx-text-fill: #64748B; /* Màu chữ phụ */
-    -fx-border-color: #E2E8F0;
-    -fx-border-radius: 6px;
+}
+
+
+/* ---------------------------- */
+/* BUTTON STYLES               */
+/* ---------------------------- */
+.button {
     -fx-cursor: hand;
-    -fx-font-size: 13px;
     -fx-font-weight: bold;
-}
-.top-bar-button:hover {
-    -fx-background-color: #acafaf; /* Nền xám rất nhạt khi hover */
-    -fx-border-color: #E2E8F0;
+    -fx-font-size: 13px;
+    -fx-background-radius: 8px;
 }
 
-.primary-entry-title {
-    -fx-font-weight: 900; /* In đậm hơn */
-    -fx-text-fill: #2563EB; /* Dùng màu nhấn */
+.primary-button {
+    -fx-background-color: -primary-color;
+    -fx-text-fill: -text-on-primary;
+    -fx-padding: 8px 14px;
+}
+.primary-button:hover {
+    -fx-background-color: -primary-dark-color;
 }
 
-.primary-entry-cell {
-    -fx-background-color: #F0FDF4; /* Màu xanh lá rất nhạt */
-    -fx-border-width: 0 0 1px 4px;  /* Viền trái dày 4px để làm nổi bật */
-    -fx-border-color: transparent transparent #E2E8F0 #22C55E; /* Viền trái màu xanh lá cây */
+.secondary-button, .text-button {
+    -fx-background-color: -surface-2;
+    -fx-text-fill: -text-primary;
+    -fx-padding: 8px 14px;
+    -fx-border-radius: 6px;
+}
+.secondary-button:hover, .text-button:hover {
+    -fx-background-color: -surface-3;
+}
+
+.danger-button {
+    -fx-background-color: #FEE2E2;
+    -fx-text-fill: #B91C1C;
+}
+.danger-button:hover {
+    -fx-background-color: #FECACA;
+    -fx-text-fill: #7F1D1D;
+}
+
+.icon-button {
+    -fx-background-color: transparent;
+    -fx-padding: 6px;
+}
+.icon-button:hover {
+    -fx-background-color: -surface-3;
+}
+.icon-button .ikonli-font-icon {
+    -fx-icon-color: -text-secondary;
+    -fx-icon-size: 18px;
 }

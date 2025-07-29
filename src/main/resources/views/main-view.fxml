@@ -5,103 +5,126 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.web.HTMLEditor?>
 <?import javafx.scene.web.WebView?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<?import javafx.scene.web.HTMLEditor?>
-<StackPane fx:id="rootStackPane" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mydiary.diaryappclient.controller.MainViewController">
+<StackPane fx:id="rootStackPane" styleClass="root" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mydiary.diaryappclient.controller.MainViewController">
     <children>
-        <BorderPane fx:id="mainContentPane" prefHeight="720.0" prefWidth="1280.0">
+        <BorderPane fx:id="mainContentPane">
             <top>
-                <HBox alignment="CENTER_LEFT" prefHeight="50.0" spacing="20.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #E0E0E0; -fx-border-width: 0 0 1 0;">
+                <HBox fx:id="appHeader" styleClass="app-header">
                     <children>
+                        <Button fx:id="sidebarToggleButton" onAction="#toggleSidebar" styleClass="icon-button">
+                            <graphic>
+                                <FontIcon iconLiteral="fas-bars" />
+                            </graphic>
+                        </Button>
                         <Label styleClass="app-title" text="Ultimate Diary" />
                         <Pane HBox.hgrow="ALWAYS" />
-                        <Button fx:id="setPinButton" styleClass="top-bar-button" mnemonicParsing="false" onAction="#handleSetPinButtonAction" text="Cài đặt PIN" />
-                        <Button fx:id="logoutButton" styleClass="top-bar-button" mnemonicParsing="false" onAction="#handleLogoutButtonAction" text="Đăng xuất" />
+                        <Button fx:id="themeToggleButton" onAction="#toggleTheme" styleClass="icon-button">
+                            <graphic>
+                                <FontIcon fx:id="themeIcon" iconLiteral="fas-moon" />
+                            </graphic>
+                            <tooltip><Tooltip text="Chuyển đổi chủ đề" /></tooltip>
+                        </Button>
                     </children>
-                    <padding>
-                        <Insets left="20.0" right="20.0" />
-                    </padding>
                 </HBox>
             </top>
-            <center>
-                <SplitPane fx:id="mainSplitPane" dividerPositions="0.30" styleClass="main-split-pane" BorderPane.alignment="CENTER">
-                    <items>
-                        <VBox fx:id="sidebar" spacing="15.0" styleClass="sidebar" minWidth="280.0" prefWidth="320.0" maxWidth="450.0">
+
+            <left>
+                <VBox fx:id="sidebar" styleClass="sidebar">
+                    <children>
+                        <Button fx:id="newEntryButton" onAction="#handleNewEntryButtonAction" styleClass="primary-button" text="Tạo bài viết mới" maxWidth="1.7976931348623157E308">
+                            <graphic>
+                                <FontIcon iconLiteral="fas-plus" />
+                            </graphic>
+                        </Button>
+                        <TextField fx:id="searchField" styleClass="search-field" promptText="Tìm kiếm..." />
+                        <ListView fx:id="entriesListView" styleClass="entries-list-view" VBox.vgrow="ALWAYS" />
+                        <HBox fx:id="userInfoBox" alignment="CENTER_LEFT" styleClass="user-info-box">
                             <children>
-                                <Button fx:id="newEntryButton" mnemonicParsing="false" onAction="#handleNewEntryButtonAction" styleClass="new-post-button" text="+ Bài viết mới" maxWidth="Infinity"/>
-                                <TextField fx:id="searchField" promptText="Tìm kiếm..." styleClass="search-field" />
-                                <ListView fx:id="entriesListView" styleClass="entries-list-view" VBox.vgrow="ALWAYS" />
-                                <HBox fx:id="userInfoBox" alignment="CENTER_LEFT" spacing="10.0" styleClass="user-info-box">
+                                <ImageView fx:id="avatarImageView" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+                                <Label fx:id="usernameLabel" styleClass="username-label" />
+                                <Pane HBox.hgrow="ALWAYS" />
+                                <Button fx:id="setPinButton" onAction="#handleSetPinButtonAction" styleClass="icon-button">
+                                    <graphic>
+                                        <FontIcon iconLiteral="fas-cog" />
+                                    </graphic>
+                                    <tooltip><Tooltip text="Cài đặt" /></tooltip>
+                                </Button>
+                                <Button fx:id="logoutButton" onAction="#handleLogoutButtonAction" styleClass="icon-button">
+                                    <graphic>
+                                        <FontIcon iconLiteral="fas-sign-out-alt" />
+                                    </graphic>
+                                    <tooltip><Tooltip text="Đăng xuất" /></tooltip>
+                                </Button>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </left>
+
+            <center>
+                <StackPane fx:id="contentArea" styleClass="content-area">
+                    <children>
+                        <VBox fx:id="contentPlaceholder" styleClass="content-placeholder" alignment="CENTER">
+                            <children>
+                                <FontIcon iconLiteral="fas-book-open" styleClass="placeholder-icon" />
+                                <Label text="Chọn một bài viết để xem hoặc tạo mới" styleClass="placeholder-text" />
+                            </children>
+                        </VBox>
+
+                        <VBox fx:id="entryDetailView" styleClass="entry-detail-view" visible="false">
+                            <children>
+                                <BorderPane>
+                                    <center>
+                                        <Label fx:id="entryTitleLabel" styleClass="entry-title" />
+                                    </center>
+                                    <right>
+                                        <HBox spacing="8.0" alignment="CENTER_RIGHT">
+                                            <children>
+                                                <Button fx:id="editButton" onAction="#handleEditButtonAction" styleClass="secondary-button" text="Chỉnh sửa" />
+                                                <Button fx:id="deleteButton" onAction="#handleDeleteButtonAction" styleClass="danger-button" text="Xóa" />
+                                            </children>
+                                        </HBox>
+                                    </right>
+                                </BorderPane>
+                                <Label fx:id="entryDateLabel" styleClass="entry-date" />
+                                <ScrollPane fitToWidth="true" styleClass="content-scroll-pane" VBox.vgrow="ALWAYS">
+                                    <content>
+                                        <WebView fx:id="entryContentView" />
+                                    </content>
+                                </ScrollPane>
+                            </children>
+                        </VBox>
+
+                        <VBox fx:id="entryEditorView" styleClass="entry-editor-view" visible="false">
+                            <children>
+                                <Label fx:id="editorModeLabel" styleClass="editor-mode-label" />
+                                <TextField fx:id="editorTitleField" styleClass="editor-title-field" promptText="Nhập tiêu đề..." />
+                                <HTMLEditor fx:id="editorContentArea" styleClass="html-editor" VBox.vgrow="ALWAYS" />
+                                <HBox spacing="8.0" alignment="CENTER_RIGHT">
                                     <children>
-                                        <ImageView fx:id="avatarImageView" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                                        <Label fx:id="usernameLabel" styleClass="username-label" text="Username" />
+                                        <Button fx:id="cancelEditButton" onAction="#handleCancelEditButtonAction" styleClass="text-button" text="Hủy" />
+                                        <Button fx:id="saveEntryButton" onAction="#handleSaveEntryButtonAction" styleClass="primary-button" text="Lưu" />
                                     </children>
                                 </HBox>
                             </children>
                         </VBox>
-                        <StackPane fx:id="contentArea" style="-fx-background-color: white;">
-                            <children>
-                                <VBox fx:id="entryDetailView" styleClass="entry-detail-view" visible="false">
-                                    <children>
-                                        <BorderPane>
-                                            <center>
-                                                <Label fx:id="entryTitleLabel" styleClass="entry-detail-title" text="Tiêu đề bài viết" BorderPane.alignment="CENTER_LEFT" />
-                                            </center>
-                                            <right>
-                                                <HBox alignment="CENTER_RIGHT" spacing="10.0" BorderPane.alignment="CENTER">
-                                                    <children>
-                                                        <Button fx:id="editButton" mnemonicParsing="false" onAction="#handleEditButtonAction" styleClass="secondary-button" text="Chỉnh sửa" />
-                                                        <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#handleDeleteButtonAction" styleClass="delete-button" text="Xóa" />
-                                                    </children>
-                                                </HBox>
-                                            </right>
-                                        </BorderPane>
-                                        <Label fx:id="entryDateLabel" styleClass="entry-detail-date" text="Ngày tháng" />
-                                        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
-                                            <content>
-                                                <WebView fx:id="entryContentView" />
-                                            </content>
-                                        </ScrollPane>
-                                    </children>
-                                </VBox>
-                                <VBox fx:id="contentPlaceholder" styleClass="content-placeholder">
-                                    <children>
-                                        <FontIcon iconLiteral="fas-sticky-note" />
-                                        <Label text="Chọn một bài viết để xem" />
-                                    </children>
-                                </VBox>
-                                <VBox fx:id="entryEditorView" managed="false" spacing="15.0" styleClass="entry-detail-view" visible="false">
-                                    <children>
-                                        <Label fx:id="editorModeLabel" styleClass="entry-detail-title" text="Tạo bài viết mới" />
-                                        <TextField fx:id="editorTitleField" promptText="Tiêu đề..." />
-                                        <HTMLEditor fx:id="editorContentArea" VBox.vgrow="ALWAYS" />
-                                        <HBox alignment="CENTER_RIGHT" spacing="10.0">
-                                            <children>
-                                                <Button fx:id="cancelEditButton" mnemonicParsing="false" onAction="#handleCancelEditButtonAction" style="-fx-background-color: transparent;" text="Hủy" />
-                                                <Button fx:id="saveEntryButton" mnemonicParsing="false" onAction="#handleSaveEntryButtonAction" styleClass="primary-button" text="Lưu" />
-                                            </children>
-                                        </HBox>
-                                    </children>
-                                </VBox>
-                            </children>
-                        </StackPane>
-                    </items>
-                </SplitPane>
+                    </children>
+                </StackPane>
             </center>
         </BorderPane>
 
-        <StackPane fx:id="modalPane" style="-fx-background-color: rgba(0, 0, 0, 0.4);" visible="false" />
-
+        <StackPane fx:id="modalPane" styleClass="modal-overlay" visible="false" />
     </children>
 </StackPane>

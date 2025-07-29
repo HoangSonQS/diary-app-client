@@ -8,6 +8,7 @@ import com.mydiary.diaryappclient.service.ApiClient;
 import com.mydiary.diaryappclient.service.AuthService;
 import com.mydiary.diaryappclient.service.CredentialManager;
 import com.mydiary.diaryappclient.util.SceneManager;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,14 +17,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
+import javafx.util.Duration;
+import org.kordamp.ikonli.javafx.FontIcon;
+
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -37,6 +40,8 @@ public class MainViewController {
     @FXML private StackPane modalPane;
     @FXML private Label usernameLabel;
     @FXML private ListView<Entry> entriesListView;
+    @FXML private VBox sidebar;
+    @FXML private FontIcon themeIcon;
 
     // Panels
     @FXML private VBox contentPlaceholder;
@@ -59,13 +64,80 @@ public class MainViewController {
 
     private final ObservableList<Entry> entryList = FXCollections.observableArrayList();
     private Entry currentlyEditingEntry;
+    private boolean isSidebarVisible = true;
+    private boolean isDarkTheme = false;
+
+    private final double sidebarPrefWidth = 320.0;
 
     @FXML
     public void initialize() {
         usernameLabel.setText(AuthService.getInstance().getUsername());
-        switchContentView(ContentViewMode.PLACEHOLDER); // Bắt đầu với placeholder
+        switchContentView(ContentViewMode.PLACEHOLDER, false); // Bắt đầu với placeholder, không có animation
         setupEntriesListView();
         loadEntries();
+    }
+
+    @FXML
+    private void toggleSidebar(ActionEvent event) {
+        isSidebarVisible = !isSidebarVisible;
+
+        // Thiết lập thông số animation
+        final double DURATION = 300; // milliseconds
+        final double START_OPACITY = isSidebarVisible ? 0 : 1;
+        final double END_OPACITY = isSidebarVisible ? 1 : 0;
+        final double START_TRANSLATE = isSidebarVisible ? -30 : 0;
+        final double END_TRANSLATE = isSidebarVisible ? 0 : -30;
+
+        // Kích hoạt hiển thị trước khi animation bắt đầu (nếu đang mở)
+        if (isSidebarVisible) {
+            sidebar.setVisible(true);
+            sidebar.setManaged(true);
+            sidebar.setOpacity(START_OPACITY);
+            sidebar.setTranslateX(START_TRANSLATE);
+        }
+
+        // Tạo hiệu ứng song song
+        ParallelTransition parallelTransition = new ParallelTransition();
+
+        // Hiệu ứng fade (mờ dần)
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(DURATION), sidebar);
+        fadeTransition.setFromValue(START_OPACITY);
+        fadeTransition.setToValue(END_OPACITY);
+
+        // Hiệu ứng slide (trượt)
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(DURATION), sidebar);
+        translateTransition.setFromX(START_TRANSLATE);
+        translateTransition.setToX(END_TRANSLATE);
+        translateTransition.setInterpolator(Interpolator.EASE_OUT);
+
+        parallelTransition.getChildren().addAll(fadeTransition, translateTransition);
+
+        // Xử lý sau khi animation hoàn thành
+        parallelTransition.setOnFinished(e -> {
+            if (!isSidebarVisible) {
+                sidebar.setVisible(false);
+                sidebar.setManaged(false);
+            }
+            sidebar.setTranslateX(0); // Reset vị trí
+        });
+
+        // Tối ưu hiệu năng
+        sidebar.setCache(true);
+        sidebar.setCacheHint(CacheHint.SPEED);
+
+        parallelTransition.play();
+    }
+
+    @FXML
+    private void toggleTheme(ActionEvent event) {
+        isDarkTheme = !isDarkTheme;
+        if (isDarkTheme) {
+            rootStackPane.getStyleClass().add("dark");
+            themeIcon.setIconLiteral("fas-sun");
+        } else {
+            rootStackPane.getStyleClass().remove("dark");
+            themeIcon.setIconLiteral("fas-moon");
+        }
     }
 
     private void loadEntries() {
@@ -151,7 +223,7 @@ public class MainViewController {
 
     private void displayEntryDetails(Entry entry) {
         if (entry == null) {
-            switchContentView(ContentViewMode.PLACEHOLDER);
+            switchContentView(ContentViewMode.PLACEHOLDER, true);
             return;
         }
         entryTitleLabel.setText(entry.getTitle());
@@ -162,18 +234,28 @@ public class MainViewController {
                 + entry.getContent()
                 + "</body></html>";
         entryContentView.getEngine().loadContent(contentWithLineBreaks);
-        switchContentView(ContentViewMode.DETAIL);
+        switchContentView(ContentViewMode.DETAIL, true);
     }
 
     private enum ContentViewMode { PLACEHOLDER, DETAIL, EDITOR }
+    private void switchContentView(ContentViewMode mode, boolean animate) {
+        Node targetNode = null;
+        if (mode == ContentViewMode.PLACEHOLDER) targetNode = contentPlaceholder;
+        if (mode == ContentViewMode.DETAIL) targetNode = entryDetailView;
+        if (mode == ContentViewMode.EDITOR) targetNode = entryEditorView;
 
-    private void switchContentView(ContentViewMode mode) {
-        contentPlaceholder.setVisible(mode == ContentViewMode.PLACEHOLDER);
-        contentPlaceholder.setManaged(mode == ContentViewMode.PLACEHOLDER);
-        entryDetailView.setVisible(mode == ContentViewMode.DETAIL);
-        entryDetailView.setManaged(mode == ContentViewMode.DETAIL);
-        entryEditorView.setVisible(mode == ContentViewMode.EDITOR);
-        entryEditorView.setManaged(mode == ContentViewMode.EDITOR);
+        for (Node child : contentPlaceholder.getParent().getChildrenUnmodifiable()) {
+            child.setVisible(child.equals(targetNode));
+            child.setManaged(child.equals(targetNode));
+        }
+
+        if (animate && targetNode != null) {
+            FadeTransition ft = new FadeTransition(Duration.millis(300), targetNode);
+            ft.setFromValue(0.0);
+            ft.setToValue(1.0);
+            ft.setInterpolator(Interpolator.EASE_IN); // Thêm gia tốc
+            ft.play();
+        }
     }
 
     private void showPlaceholder(boolean show) {
@@ -196,7 +278,7 @@ public class MainViewController {
         editorModeLabel.setText("Tạo bài viết mới");
         editorTitleField.clear();
         editorContentArea.setHtmlText("");
-        switchContentView(ContentViewMode.EDITOR);
+        switchContentView(ContentViewMode.EDITOR, false);
     }
 
     @FXML
@@ -219,14 +301,30 @@ public class MainViewController {
 
             modalPane.getChildren().setAll(modalContent);
             modalPane.setVisible(true);
+
+            // Thêm hiệu ứng fade-in cho modal
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(250), modalPane);
+            fadeIn.setFromValue(0);
+            fadeIn.setToValue(1);
+            fadeIn.setInterpolator(Interpolator.EASE_IN);
+            fadeIn.play();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private void closeModal() {
-        modalPane.setVisible(false);
-        modalPane.getChildren().clear();
+        // Thêm hiệu ứng fade-out cho modal
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(250), modalPane);
+        fadeOut.setFromValue(1);
+        fadeOut.setToValue(0);
+        fadeOut.setInterpolator(Interpolator.EASE_OUT);
+        fadeOut.setOnFinished(e -> {
+            modalPane.setVisible(false);
+            modalPane.getChildren().clear();
+        });
+        fadeOut.play();
     }
 
     @FXML
@@ -301,7 +399,7 @@ public class MainViewController {
         editorModeLabel.setText("Chỉnh sửa bài viết");
         editorTitleField.setText(selectedEntry.getTitle());
         editorContentArea.setHtmlText(selectedEntry.getContent());
-        switchContentView(ContentViewMode.EDITOR);
+        switchContentView(ContentViewMode.EDITOR, false);
     }
 
     @FXML
@@ -329,7 +427,7 @@ public class MainViewController {
         saveTask.setOnSucceeded(e -> Platform.runLater(() -> {
             saveEntryButton.setDisable(false);
             loadEntries(); // Tải lại danh sách
-            switchContentView(ContentViewMode.PLACEHOLDER); // Quay về placeholder
+            switchContentView(ContentViewMode.PLACEHOLDER, false); // Quay về placeholder
         }));
 
         saveTask.setOnFailed(e -> {
