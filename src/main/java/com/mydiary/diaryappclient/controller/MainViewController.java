@@ -82,7 +82,7 @@ public class MainViewController {
         isSidebarVisible = !isSidebarVisible;
 
         // Thiết lập thông số animation
-        final double DURATION = 300; // milliseconds
+        final double DURATION = 150; // milliseconds
         final double START_OPACITY = isSidebarVisible ? 0 : 1;
         final double END_OPACITY = isSidebarVisible ? 1 : 0;
         final double START_TRANSLATE = isSidebarVisible ? -30 : 0;
